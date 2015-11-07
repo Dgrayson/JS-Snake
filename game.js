@@ -4,6 +4,9 @@ var ctx;
 var x = 0; 
 var y = 0; 
 var s; 
+var item; 
+
+var itemSpawned = false; 
 
 var Player = function(){
 	this.playerX = 0; 
@@ -17,6 +20,40 @@ Player.prototype.drawPlayer = function(){
 	ctx.closePath(); 
 	ctx.fillStyle = "white"; 
 	ctx.fill(); 
+}
+
+var Item = function(){
+	this.itemX = 0; 
+	this.itemY = 0; 
+}
+
+Item.prototype.spawnItem = function(){
+
+	this.itemX = randomInt(0, 290); 
+	this.itemY = randomInt(0, 145); 
+}
+
+Item.prototype.drawItem = function(){
+
+	ctx.beginPath(); 
+	ctx.rect(this.itemX, this.itemY, 5,5); 
+	ctx.closePath(); 
+	ctx.fillStyle = "white";
+	ctx.fill(); 
+}
+
+function randomInt(max, min){
+	var running = true; 
+
+	while(running){
+		var temp = Math.floor(Math.random() * (max - min + 1)) + min;
+
+		if(temp % 5 == 0)
+			running = false; 
+		
+	}
+
+	return temp; 
 }
 
 function init(){
@@ -44,9 +81,25 @@ function draw(){
 
 	s.drawPlayer(); 
 
+	checkItemAlive(); 
+
 
 	console.log("X = " + s.playerX); 
 	console.log("Y = " + s.playerY); 
+}
+
+function checkItemAlive(){
+	if(itemSpawned == false){
+
+		item = new Item(); 
+		item.spawnItem(); 
+		item.drawItem(); 
+		itemSpawned = true;  
+	}
+	else{
+		item.drawItem(); 
+		
+	}
 }
 
 function getKeyDown(e){
