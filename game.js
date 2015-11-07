@@ -1,8 +1,6 @@
 var c; 
 var ctx; 
 
-var x = 0; 
-var y = 0; 
 var s; 
 var item; 
 
@@ -11,36 +9,60 @@ var itemSpawned = false;
 var Player = function(){
 	this.playerX = 0; 
 	this.playerY = 0; 
-}
+	this.direction = "right"; 
+	this.alive = true; 
+	this.segments = 1; 
 
-Player.prototype.drawPlayer = function(){
+	this.drawPlayer = function(){
 
 	ctx.beginPath();
 	ctx.rect(this.playerX, this.playerY,10,5); 
 	ctx.closePath(); 
 	ctx.fillStyle = "white"; 
 	ctx.fill(); 
+	}
+
+	this.movePlayer = function(){
+		switch(this.direction){
+
+		case "right": 
+			this.playerX += 5; 
+			break; 
+		case "left": 
+			this.playerX -= 5; 
+			break; 
+		case "up": 
+			this.playerY += 5; 
+			break; 
+		case "down": 
+			this.playerY -= 5; 
+			break; 
+
+		}
+	}
 }
+
 
 var Item = function(){
 	this.itemX = 0; 
 	this.itemY = 0; 
-}
 
-Item.prototype.spawnItem = function(){
+	this.spawnItem = function(){
 
 	this.itemX = randomInt(0, 290); 
 	this.itemY = randomInt(0, 145); 
+	}
+
+	this.drawItem = function(){
+
+		ctx.beginPath(); 
+		ctx.rect(this.itemX, this.itemY, 5,5); 
+		ctx.closePath(); 
+		ctx.fillStyle = "white";
+		ctx.fill(); 
+	}
 }
 
-Item.prototype.drawItem = function(){
-
-	ctx.beginPath(); 
-	ctx.rect(this.itemX, this.itemY, 5,5); 
-	ctx.closePath(); 
-	ctx.fillStyle = "white";
-	ctx.fill(); 
-}
 
 function randomInt(max, min){
 	var running = true; 
