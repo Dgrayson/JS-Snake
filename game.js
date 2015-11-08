@@ -6,20 +6,32 @@ var item;
 
 var itemSpawned = false; 
 
+var score = 0; 
+
 var Player = function(){
 	this.x = 0; 
 	this.y = 0; 
+	this.width = 5; 
+	this.height = 5; 
 	this.direction = "right"; 
 	this.alive = true; 
 	this.segments = 1; 
 
 	this.drawPlayer = function(){
 
-	ctx.beginPath();
-	ctx.rect(this.x, this.y,10,5); 
-	ctx.closePath(); 
-	ctx.fillStyle = "white"; 
-	ctx.fill(); 
+		ctx.beginPath();
+		ctx.rect(this.x, this.y, this.width, this.height); 
+		ctx.closePath(); 
+		ctx.fillStyle = "white"; 
+		ctx.fill(); 
+	}
+
+	this.collisionCheck = function(i){
+		if(this.x < i.x + i.width && this.x + this.width > i.x 
+			&& this.y < i.y + i.width && this.y + this.height > i.y){
+			itemSpawned = false; 
+			score += 100; 
+		}
 	}
 
 	this.movePlayer = function(){
@@ -45,11 +57,13 @@ var Player = function(){
 var Item = function(){
 	this.x = 0; 
 	this.y = 0; 
+	this.width = 5;
+	this.height = 5;
 
 	this.spawnItem = function(){
 
-	this.x = randomInt(0, 290); 
-	this.y = randomInt(0, 145); 
+		this.x = randomInt(0, 290); 
+		this.y = randomInt(0, 145); 
 	}
 
 	this.drawItem = function(){
@@ -102,9 +116,13 @@ function draw(){
 
 	s.drawPlayer(); 
 
+
 	checkItemAlive(); 
 
+	s.collisionCheck(item); 
 
+	//displayScore(); 
+	
 	console.log("X = " + s.x); 
 	console.log("Y = " + s.y); 
 }
@@ -147,6 +165,12 @@ function getKeyDown(e){
 				s.x = s.x + 5; 
 			break; 
 	}
+}
+
+function displayScore(){
+	ctx.font = "30px Arial"; 
+	ctx.fillStyle = "white"; 
+	ctx.fillText("Score: " + score, c.width/2, 0); 
 }
 
 window.addEventListener('keydown',getKeyDown,true);
