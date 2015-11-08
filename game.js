@@ -7,8 +7,8 @@ var item;
 var itemSpawned = false; 
 
 var Player = function(){
-	this.playerX = 0; 
-	this.playerY = 0; 
+	this.x = 0; 
+	this.y = 0; 
 	this.direction = "right"; 
 	this.alive = true; 
 	this.segments = 1; 
@@ -16,7 +16,7 @@ var Player = function(){
 	this.drawPlayer = function(){
 
 	ctx.beginPath();
-	ctx.rect(this.playerX, this.playerY,10,5); 
+	ctx.rect(this.x, this.y,10,5); 
 	ctx.closePath(); 
 	ctx.fillStyle = "white"; 
 	ctx.fill(); 
@@ -26,37 +26,36 @@ var Player = function(){
 		switch(this.direction){
 
 		case "right": 
-			this.playerX += 5; 
+			this.x += 5; 
 			break; 
 		case "left": 
-			this.playerX -= 5; 
+			this.x -= 5; 
 			break; 
 		case "up": 
-			this.playerY += 5; 
+			this.y += 5; 
 			break; 
 		case "down": 
-			this.playerY -= 5; 
+			this.y -= 5; 
 			break; 
 
 		}
 	}
 }
 
-
 var Item = function(){
-	this.itemX = 0; 
-	this.itemY = 0; 
+	this.x = 0; 
+	this.y = 0; 
 
 	this.spawnItem = function(){
 
-	this.itemX = randomInt(0, 290); 
-	this.itemY = randomInt(0, 145); 
+	this.x = randomInt(0, 290); 
+	this.y = randomInt(0, 145); 
 	}
 
 	this.drawItem = function(){
 
 		ctx.beginPath(); 
-		ctx.rect(this.itemX, this.itemY, 5,5); 
+		ctx.rect(this.x, this.y, 5,5); 
 		ctx.closePath(); 
 		ctx.fillStyle = "white";
 		ctx.fill(); 
@@ -106,8 +105,8 @@ function draw(){
 	checkItemAlive(); 
 
 
-	console.log("X = " + s.playerX); 
-	console.log("Y = " + s.playerY); 
+	console.log("X = " + s.x); 
+	console.log("Y = " + s.y); 
 }
 
 function checkItemAlive(){
@@ -129,23 +128,23 @@ function getKeyDown(e){
 	switch(e.keyCode){
 		// up arrow
 		case 38: 
-			if(s.playerY > 0)
-				s.playerY = s.playerY - 5; 
+			if(s.y > 0)
+				s.y = s.y - 5; 
 			break; 
 		// Down arrow
 		case 40:
-			if(s.playerY < 145)
-				s.playerY = s.playerY + 5; 
+			if(s.y < 145)
+				s.y = s.y + 5; 
 			break; 
 		// left arrow
 		case 37: 
-			if(s.playerX > 0)
-				s.playerX = s.playerX - 5; 
+			if(s.x > 0)
+				s.x = s.x - 5; 
 			break; 
 		// right arrow
 		case 39: 
-			if(s.playerX < 290)
-				s.playerX = s.playerX + 5; 
+			if(s.x < 290)
+				s.x = s.x + 5; 
 			break; 
 	}
 }
