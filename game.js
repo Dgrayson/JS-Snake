@@ -36,12 +36,24 @@ var Player = function(){
 
 	this.collisionCheck = function(i){
 		if(this.x < i.x + i.width && this.x + this.width > i.x 
-			&& this.y < i.y + i.width && this.y + this.height > i.y){
+			&& this.y < i.y + i.height && this.y + this.height > i.y){
 			itemSpawned = false; 
 			score += 100; 
 			this.addSegment(); 
 		}
 
+
+		// Check if snake has collided with tail
+		var i = 0; 
+
+		if(this.numSegments > 1){
+			for(i = 1; i < this.numSegments; i++){
+				if(this.x < this.segments[i].x + this.segments[i].width && this.x + this.width > this.segments[i].x
+					&& this.y < this.segments[i].y + this.segments[i].height && this.y + this.width > this.segments[i].y)
+					restartGame(); 
+			}
+		}
+		// Check out of bounds
 		if(this.x < 0 || this.x > 300 || this.y < 0 || this.y > 150)
 			restartGame(); 
 	}
@@ -178,6 +190,8 @@ function restartGame(){
 
 	s.segments[s.numSegments] = tempSeg; 
 	s.numSegments++; 
+
+	itemSpawned = false; 
 }
 
 function clear(){
