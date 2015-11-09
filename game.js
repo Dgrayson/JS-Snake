@@ -91,28 +91,15 @@ var Player = function(){
 	}
 
 	this.updateSegments = function(){
-		var i = 0; 
-		
-		while(i < this.numSegments){
-			switch(this.direction){
+		var i = 0;
 
-			case "right": 
-				this.segments[i].x += 5; 
-				break; 
-			case "left": 
-				this.segments[i].x -= 5; 
-				break; 
-			case "up": 
-				this.segments[i].y -= 5; 
-				break; 
-			case "down": 
-				this.segments[i].y += 5; 
-				break; 
-
-			}
-
-			i++;
+		for(i = this.numSegments-1; i > 0; i--){
+			this.segments[i].x = this.segments[i-1].x; 
+			this.segments[i].y = this.segments[i-1].y
 		}
+
+		this.segments[0].x = this.x; 
+		this.segments[0].y = this.y; 
 	}
 }
 
@@ -164,6 +151,11 @@ function init(){
 	c = document.getElementById("myCanvas"); 
 	ctx = c.getContext("2d"); 
 	s = new Player(); 
+
+	tempSeg = new Segment(s.x, s.y);
+
+	s.segments[s.numSegments] = tempSeg; 
+	s.numSegments++;  
 	return setInterval(draw, 10);
 }
 
@@ -224,22 +216,22 @@ function getKeyDown(e){
 	switch(e.keyCode){
 		// up arrow
 		case 38: 
-			if(s.y > 0)
+			if(s.direction != "down")
 				s.direction = "up";  
 			break; 
 		// Down arrow
 		case 40:
-			if(s.y < 145)
+			if(s.direction != "up")
 				s.direction = "down"; 
 			break; 
 		// left arrow
 		case 37: 
-			if(s.x > 0)
+			if(s.direction != "right")
 				s.direction = "left"; 
 			break; 
 		// right arrow
 		case 39: 
-			if(s.x < 290)
+			if(s.direction != "left")
 				s.direction = "right"; 
 			break; 
 	}
