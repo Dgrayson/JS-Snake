@@ -12,13 +12,12 @@ var colors = ["red", "blue", "white", "yellow", "pink"];
 var colorTracker = 0; 
 
 // Main payer class
-
 var Player = function(){
 
 	this.x = 0; 
 	this.y = 0; 
-	this.width = 5; 
-	this.height = 5; 
+	this.width = 20; 
+	this.height = 20; 
 	this.direction = "right"; 
 	this.alive = true; 
 	this.numSegments = 0; 
@@ -55,12 +54,16 @@ var Player = function(){
 			for(i = 1; i < this.numSegments; i++){
 				if(this.x < this.segments[i].x + this.segments[i].width && this.x + this.width > this.segments[i].x
 					&& this.y < this.segments[i].y + this.segments[i].height && this.y + this.width > this.segments[i].y)
+				{
+					console.log("tail collsion"); 
 					restartGame(); 
+				
+				}
 			}
 		}
 
 		// Check out of bounds
-		if(this.x < 0 || this.x > 300 || this.y < 0 || this.y > 150)
+		if(this.x < 0 || this.x > 700 || this.y < 0 || this.y > 500)
 			restartGame(); 
 	}
 
@@ -69,16 +72,16 @@ var Player = function(){
 		switch(this.direction){
 
 			case "right": 
-				this.x += 5; 
+				this.x += 15; 
 				break; 
 			case "left": 
-				this.x -= 5; 
+				this.x -= 15; 
 				break; 
 			case "up": 
-				this.y -= 5; 
+				this.y -= 15; 
 				break; 
 			case "down": 
-				this.y += 5; 
+				this.y += 15; 
 				break; 
 
 		}
@@ -91,9 +94,9 @@ var Player = function(){
 		var newSegment 
 
 		if(this.numSegments == 0)
-			newSegment = new Segment(this.x - 6, this.y);
+			newSegment = new Segment(this.x - 15, this.y);
 		else
-			newSegment = new Segment(this.segments[this.numSegments-1].x - 6, this.segments[this.numSegments-1].y); 
+			newSegment = new Segment(this.segments[this.numSegments-1].x - 15, this.segments[this.numSegments-1].y); 
 
 		this.segments.push(newSegment); 
 		this.numSegments++; 
@@ -136,8 +139,8 @@ var Player = function(){
 var Segment = function(x,y){
 	this.x = x; 
 	this.y = y; 
-	this.width = 5; 
-	this.height = 5; 
+	this.width = 25; 
+	this.height = 25; 
 }
 
 // Item class
@@ -157,15 +160,15 @@ var Item = function(){
 
 	// spawn an item
 	this.spawnItem = function(){
-		this.x = randomInt(0, 290); 
-		this.y = randomInt(0, 145); 
+		this.x = randomInt(0, 700); 
+		this.y = randomInt(0, 500); 
 	}
 
 	// draw the item
 	this.drawItem = function(){
 
 		ctx.beginPath(); 
-		ctx.rect(this.x, this.y, 5,5); 
+		ctx.rect(this.x, this.y, 20,20); 
 		ctx.closePath(); 
 		ctx.fillStyle = this.color;
 		ctx.fill(); 
@@ -179,7 +182,7 @@ function randomInt(max, min){
 	while(running){
 		var temp = Math.floor(Math.random() * (max - min + 1)) + min;
 
-		if(temp % 5 == 0)
+		if(temp % 15 == 0)
 			running = false; 
 		
 	}
