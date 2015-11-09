@@ -8,7 +8,7 @@ var itemSpawned = false;
 
 var score = 0; 
 
-var timer = 50; 
+var timer = 10; 
 
 var Player = function(){
 
@@ -63,14 +63,20 @@ var Player = function(){
 
 	this.addSegment = function(){
 
-		var newSegment = new Segment(this.x - 5, this.y); 
-		this.segments[this.numSegments] = newSegment; 
+		var newSegment 
+
+		if(this.numSegments == 0)
+			newSegment = new Segment(this.x - 6, this.y);
+		else
+			newSegment = new Segment(this.segments[this.numSegments-1].x - 6, this.segments[this.numSegments-1].y); 
+
+		this.segments.push(newSegment); 
 		this.numSegments++; 
 	}
 
 	this.drawSegments = function(){
 
-		this.updateSegments(); 
+		//this.updateSegments(); 
 
 		var i = 0; 
 
@@ -85,19 +91,27 @@ var Player = function(){
 	}
 
 	this.updateSegments = function(){
-		var tempX, tempY; 
 		var i = 0; 
-
-		tempX = this.segments[i].x; 
-		tempY = this.segments[i].y; 
-
-		this.segments[i].x = this.x; 
-		this.segments[i].y = this.y; 
-
-		i++; 
-
+		
 		while(i < this.numSegments){
-			i++; 
+			switch(this.direction){
+
+			case "right": 
+				this.segments[i].x += 5; 
+				break; 
+			case "left": 
+				this.segments[i].x -= 5; 
+				break; 
+			case "up": 
+				this.segments[i].y -= 5; 
+				break; 
+			case "down": 
+				this.segments[i].y += 5; 
+				break; 
+
+			}
+
+			i++;
 		}
 	}
 }
@@ -164,7 +178,9 @@ function draw(){
 
 	if(timer == 0){
 		s.movePlayer();
-		timer = 50; 
+		if(s.numSegments > 0)
+			s.updateSegments(); 
+		timer = 10; 
 	} 
 
 	ctx.fillStyle = "black"; 
