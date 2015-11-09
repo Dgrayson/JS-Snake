@@ -11,6 +11,8 @@ var timer = 10;
 var colors = ["red", "blue", "white", "yellow", "pink"]; 
 var colorTracker = 0; 
 
+// Main payer class
+
 var Player = function(){
 
 	this.x = 0; 
@@ -22,6 +24,7 @@ var Player = function(){
 	this.numSegments = 0; 
 	this.segments = []; 
 
+	// Draws snake on canvas
 	this.drawPlayer = function(){
 
 		ctx.beginPath();
@@ -34,14 +37,16 @@ var Player = function(){
 			this.drawSegments(); 
 	}
 
+	// Check for various collisions
 	this.collisionCheck = function(i){
+
+		// check if snake head has collided with item
 		if(this.x < i.x + i.width && this.x + this.width > i.x 
 			&& this.y < i.y + i.height && this.y + this.height > i.y){
 			itemSpawned = false; 
 			score += 100; 
 			this.addSegment(); 
 		}
-
 
 		// Check if snake has collided with tail
 		var i = 0; 
@@ -53,11 +58,13 @@ var Player = function(){
 					restartGame(); 
 			}
 		}
+
 		// Check out of bounds
 		if(this.x < 0 || this.x > 300 || this.y < 0 || this.y > 150)
 			restartGame(); 
 	}
 
+	// Move the snake head
 	this.movePlayer = function(){
 		switch(this.direction){
 
@@ -77,6 +84,8 @@ var Player = function(){
 		}
 	}
 
+
+	// add a segment to the snake
 	this.addSegment = function(){
 
 		var newSegment 
@@ -90,6 +99,7 @@ var Player = function(){
 		this.numSegments++; 
 	}
 
+	// draw the snake segements
 	this.drawSegments = function(){
 
 		//this.updateSegments(); 
@@ -106,9 +116,12 @@ var Player = function(){
 		}
 	}
 
+	// update positioning of the snake segments
 	this.updateSegments = function(){
 		var i = 0;
 
+		// Set the position of the curr segment to the one 
+		// in front of it
 		for(i = this.numSegments-1; i > 0; i--){
 			this.segments[i].x = this.segments[i-1].x; 
 			this.segments[i].y = this.segments[i-1].y
@@ -119,21 +132,22 @@ var Player = function(){
 	}
 }
 
+// Segment class
 var Segment = function(x,y){
 	this.x = x; 
 	this.y = y; 
 	this.width = 5; 
 	this.height = 5; 
-
-
 }
 
+// Item class
 var Item = function(){
 	this.x = 0; 
 	this.y = 0; 
 	this.width = 5;
 	this.height = 5;
 
+	// change color of the item
 	this.color = colors[colorTracker]; 
 
 	if(colorTracker == 4)
@@ -141,12 +155,13 @@ var Item = function(){
 	else
 		colorTracker++
 
+	// spawn an item
 	this.spawnItem = function(){
-
 		this.x = randomInt(0, 290); 
 		this.y = randomInt(0, 145); 
 	}
 
+	// draw the item
 	this.drawItem = function(){
 
 		ctx.beginPath(); 
@@ -157,7 +172,7 @@ var Item = function(){
 	}
 }
 
-
+// Select a random integer that is a multiple of 5
 function randomInt(max, min){
 	var running = true; 
 
@@ -173,18 +188,25 @@ function randomInt(max, min){
 }
 
 function init(){
+
+	// Initailize game and canvas elements
 	c = document.getElementById("myCanvas"); 
 	ctx = c.getContext("2d"); 
 	s = new Player(); 
 
 	tempSeg = new Segment(s.x, s.y);
 
+	// add snake head to the segment array
 	s.segments[s.numSegments] = tempSeg; 
 	s.numSegments++;  
+
+	// run draw function every 10ms
 	return setInterval(draw, 10);
 }
 
 function restartGame(){
+
+	// restarts game reinitalized variables to default status
 	s = new Player(); 
 	tempSeg = new Segment(s.x, s.y);
 
@@ -194,15 +216,22 @@ function restartGame(){
 	itemSpawned = false; 
 }
 
+// clear canvas
 function clear(){
 	ctx.clearRect(0,0,700, 500); 
 }
 
 function draw(){
+
+	// main game loop handles all game logic
+
+	// refresh the canvas
 	clear(); 
 
+	// tick timer down one count
 	timer -= 1; 
 
+	// if timer equals zero move the snake head and segments
 	if(timer == 0){
 		s.movePlayer();
 		if(s.numSegments > 0)
@@ -212,6 +241,7 @@ function draw(){
 
 	ctx.fillStyle = "black"; 
 
+	// repaint canvas
 	ctx.beginPath(); 
 	ctx.rect(0,0, 700,500); 
 	ctx.closePath(); 
@@ -225,7 +255,10 @@ function draw(){
 	s.collisionCheck(item); 
 }
 
+// Check if there is an item on screen
 function checkItemAlive(){
+
+	// if there is no item create one
 	if(itemSpawned == false){
 
 		item = new Item(); 
@@ -239,6 +272,7 @@ function checkItemAlive(){
 	}
 }
 
+// handles keyboard input
 function getKeyDown(e){
 
 	switch(e.keyCode){
