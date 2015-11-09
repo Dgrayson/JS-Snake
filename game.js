@@ -5,10 +5,11 @@ var s;
 var item; 
 
 var itemSpawned = false; 
-
 var score = 0; 
-
 var timer = 10; 
+
+var colors = ["red", "blue", "white", "yellow", "pink"]; 
+var colorTracker = 0; 
 
 var Player = function(){
 
@@ -40,6 +41,9 @@ var Player = function(){
 			score += 100; 
 			this.addSegment(); 
 		}
+
+		if(this.x < 0 || this.x > 300 || this.y < 0 || this.y > 150)
+			restartGame(); 
 	}
 
 	this.movePlayer = function(){
@@ -108,6 +112,8 @@ var Segment = function(x,y){
 	this.y = y; 
 	this.width = 5; 
 	this.height = 5; 
+
+
 }
 
 var Item = function(){
@@ -115,6 +121,13 @@ var Item = function(){
 	this.y = 0; 
 	this.width = 5;
 	this.height = 5;
+
+	this.color = colors[colorTracker]; 
+
+	if(colorTracker == 4)
+		colorTracker = 0; 
+	else
+		colorTracker++
 
 	this.spawnItem = function(){
 
@@ -127,7 +140,7 @@ var Item = function(){
 		ctx.beginPath(); 
 		ctx.rect(this.x, this.y, 5,5); 
 		ctx.closePath(); 
-		ctx.fillStyle = "white";
+		ctx.fillStyle = this.color;
 		ctx.fill(); 
 	}
 }
@@ -159,6 +172,14 @@ function init(){
 	return setInterval(draw, 10);
 }
 
+function restartGame(){
+	s = new Player(); 
+	tempSeg = new Segment(s.x, s.y);
+
+	s.segments[s.numSegments] = tempSeg; 
+	s.numSegments++; 
+}
+
 function clear(){
 	ctx.clearRect(0,0,700, 500); 
 }
@@ -171,7 +192,7 @@ function draw(){
 	if(timer == 0){
 		s.movePlayer();
 		if(s.numSegments > 0)
-			s.updateSegments(); 
+					s.updateSegments(); 
 		timer = 10; 
 	} 
 
@@ -183,18 +204,11 @@ function draw(){
 
 	ctx.fill(); 
 
-
 	s.drawPlayer(); 
-
 
 	checkItemAlive(); 
 
 	s.collisionCheck(item); 
-
-	//displayScore(); 
-
-	/*console.log("X = " + s.x); 
-	console.log("Y = " + s.y); */
 }
 
 function checkItemAlive(){
