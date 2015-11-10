@@ -52,13 +52,8 @@ var Player = function(){
 
 		if(this.numSegments > 1){
 			for(i = 1; i < this.numSegments; i++){
-				if(this.x < this.segments[i].x + this.segments[i].width && this.x + this.width > this.segments[i].x
-					&& this.y < this.segments[i].y + this.segments[i].height && this.y + this.width > this.segments[i].y)
-				{
-					console.log("tail collsion"); 
+				if(this.x == this.segments[i].x && this.y == this.segments[i].y)
 					restartGame(); 
-				
-				}
 			}
 		}
 
@@ -94,9 +89,9 @@ var Player = function(){
 		var newSegment 
 
 		if(this.numSegments == 0)
-			newSegment = new Segment(this.x - 15, this.y);
+			newSegment = new Segment(this.x - this.width -1, this.y);
 		else
-			newSegment = new Segment(this.segments[this.numSegments-1].x - 15, this.segments[this.numSegments-1].y); 
+			newSegment = new Segment(this.segments[this.numSegments-1].x - this.width -1, this.segments[this.numSegments-1].y); 
 
 		this.segments.push(newSegment); 
 		this.numSegments++; 
@@ -111,7 +106,7 @@ var Player = function(){
 
 		while(i < this.numSegments){
 			ctx.beginPath(); 
-			ctx.rect(this.segments[i].x, this.segments[i].y, 5,5); 
+			ctx.rect(this.segments[i].x, this.segments[i].y, this.segments[i].width, this.segments[i].height); 
 			ctx.closePath(); 
 			ctx.fillStyle = "red";
 			ctx.fill(); 
@@ -139,16 +134,16 @@ var Player = function(){
 var Segment = function(x,y){
 	this.x = x; 
 	this.y = y; 
-	this.width = 25; 
-	this.height = 25; 
+	this.width = 20; 
+	this.height = 20; 
 }
 
 // Item class
 var Item = function(){
 	this.x = 0; 
 	this.y = 0; 
-	this.width = 5;
-	this.height = 5;
+	this.width = 20;
+	this.height = 20;
 
 	// change color of the item
 	this.color = colors[colorTracker]; 
