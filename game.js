@@ -6,6 +6,7 @@ var item;
 
 var itemSpawned = false; 
 var score = 0; 
+var highScore = 0; 
 var timer = 10; 
 
 var colors = ["red", "blue", "white", "yellow", "pink"]; 
@@ -189,6 +190,8 @@ function init(){
 
 	// Initailize game and canvas elements
 	c = document.getElementById("myCanvas"); 
+  c.width = 700; 
+  c.height = 500; 
 	ctx = c.getContext("2d"); 
 	s = new Player(); 
 
@@ -211,7 +214,14 @@ function restartGame(){
 	s.segments[s.numSegments] = tempSeg; 
 	s.numSegments++; 
 
-	itemSpawned = false; 
+	itemSpawned = false;
+  
+  if(score > highScore)
+    highScore = score; 
+  
+  score = 0; 
+  
+
 }
 
 // clear canvas
@@ -251,6 +261,8 @@ function draw(){
 	checkItemAlive(); 
 
 	s.collisionCheck(item); 
+  
+  displayScore(); 
 }
 
 // Check if there is an item on screen
@@ -298,9 +310,13 @@ function getKeyDown(e){
 }
 
 function displayScore(){
-	ctx.font = "30px Arial"; 
+	ctx.font = "20px Arial"; 
 	ctx.fillStyle = "white"; 
-	ctx.fillText("Score: " + score, c.width/2, 0); 
+	ctx.fillText("Score: " + score, c.width/2 - 75, 30); 
+  
+  ctx.font = "20px Arial"; 
+	ctx.fillStyle = "white"; 
+	ctx.fillText("High Score: " + highScore, c.width - 200, 30); 
 }
 
 window.addEventListener('keydown',getKeyDown,true);
