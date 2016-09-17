@@ -30,7 +30,7 @@ var Player = function(){
 		ctx.beginPath();
 		ctx.rect(this.x, this.y, this.width, this.height); 
 		ctx.closePath(); 
-		ctx.fillStyle = "red"; 
+		ctx.fillStyle = colors[colorTracker]; 
 		ctx.fill(); 
 
 		if(this.numSegments > 0)
@@ -109,7 +109,7 @@ var Player = function(){
 			ctx.beginPath(); 
 			ctx.rect(this.segments[i].x, this.segments[i].y, this.segments[i].width, this.segments[i].height); 
 			ctx.closePath(); 
-			ctx.fillStyle = "red";
+			ctx.fillStyle = colors[colorTracker];
 			ctx.fill(); 
 			i++; 
 		}
@@ -220,7 +220,7 @@ function restartGame(){
     highScore = score; 
   
   score = 0; 
-  
+  colorTracker = 0;
 
 }
 
